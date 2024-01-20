@@ -5,7 +5,7 @@ import { PiBugBeetleFill } from "react-icons/pi";
 
 const Navbar = () => {
 	const path = usePathname();
-	console.log(path);
+	// console.log(path);
 	return (
 		<nav className="flex space-x-6 border-b px-5 h-14 items-center">
 			<Link href={"/"}>
