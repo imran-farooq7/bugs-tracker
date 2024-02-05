@@ -1,17 +1,27 @@
 "use client";
+import Spinner from "@/app/components/Spinner";
 import { Button, Text, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 
 const NewIssuePage = () => {
 	const { register, handleSubmit, control, formState } = useForm();
+	const [isLoading, setIsLoading] = useState(false);
 	const { errors } = formState;
 	const router = useRouter();
 	const onSubmit = async (data: any) => {
-		await axios.post("/api/issues", data);
+		try {
+			setIsLoading(true);
+			await axios.post("/api/issues", data);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 		router.push("/issues");
 	};
 	return (
@@ -43,7 +53,9 @@ const NewIssuePage = () => {
 					{errors.description.message as string}
 				</Text>
 			)}
-			<Button radius="large">Submit New Issue</Button>
+			<Button radius="large">
+				Submit New Issue {isLoading && <Spinner />}
+			</Button>
 		</form>
 	);
 };
